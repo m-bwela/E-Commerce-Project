@@ -1,0 +1,70 @@
+.not-found {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.not-found-content {
+  max-width: 480px;
+}
+
+.not-found-code {
+  font-size: 8rem;
+  font-weight: 800;
+  /* use theme variables for gradient based on project palette */
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.not-found-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+  margin-bottom: 1rem;
+}
+
+.not-found-text {
+  color: var(--color-muted-foreground);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.not-found-btn {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: var(--color-primary-foreground);
+  font-weight: 600;
+  border-radius: 2rem;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.not-found-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(124, 58, 237, 0.45);
+  color: #fff;
+}
+
+@media (max-width: 480px) {
+  .not-found-code {
+    font-size: 5rem;
+  }
+
+  .not-found-title {
+    font-size: 1.4rem;
+  }
+
+  .not-found-text {
+    font-size: 1rem;
+  }
+}
