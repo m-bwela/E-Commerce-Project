@@ -10,6 +10,7 @@ import cartRoutes from './routes/cart.js'
 import orderRoutes from './routes/orders.js'
 import mpesaRoutes from './routes/mpesa.js'
 import errorHandler from './middleware/errorHandler.js'
+const path = require('path');
 
 dotenv.config()
 
@@ -22,6 +23,7 @@ app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }))
 
 // Body parsing
 app.use(express.json())
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded images
 app.use(cookieParser())
 
 // Routes

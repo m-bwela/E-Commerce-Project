@@ -43,7 +43,11 @@ const getProduct = async (req, res, next) => {
 // POST /api/products — create (admin only)
 const createProduct = async (req, res, next) => {
   try {
-    const { name, description, price, image, category, stock } = req.body;
+    const { name, description, price, category, stock } = req.body;
+
+    // If a file was uploaded, use its path; otherwise null
+    const image = req.file ? `/uploads/${req.file.filename}` : null;
+
     const product = await prisma.product.create({
       data: { name, description, price, image, category, stock },
     });
@@ -58,7 +62,7 @@ const updateProduct = async (req, res, next) => {
   try {
     const product = await prisma.product.update({
       where: { id: req.params.id },
-      data: req.body,  // Only updates the fields that were sent
+      data: { ...req.body, image: req.file ? `/uploads/${req.file.filename}` : undefined },  // Only updates the fields that were sent
     });
     res.json(product);
   } catch (error) {
