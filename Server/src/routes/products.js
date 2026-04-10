@@ -1,14 +1,14 @@
-const { Router } = require('express');
-const { getProducts, getProduct, createProduct, updateProduct, deleteProduct } = require('../controllers/productController');
-const { protect, admin } = require('../middleware/auth');
-const upload = require('../middleware/upload');
+import { Router } from 'express';
+import { getProducts, getProduct, createProduct, updateProduct, deleteProduct } from '../controllers/productController.js';
+import { protect, adminOnly } from '../middleware/auth.js';
+import upload from '../middleware/upload.js';
 
 const router = Router();
 
 router.get('/', getProducts); // Anyone can browse products
 router.get('/:id', getProduct); // Anyone can view a product
-router.post('/', protect, admin, upload.single('image'), createProduct); // Only admins can create products
-router.put('/:id', protect, admin, upload.single('image'), updateProduct); // Only admins can update products
-router.delete('/:id', protect, admin, deleteProduct); // Only admins can delete products
+router.post('/', protect, adminOnly, upload.single('image'), createProduct); // Only admins can create products
+router.put('/:id', protect, adminOnly, upload.single('image'), updateProduct); // Only admins can update products
+router.delete('/:id', protect, adminOnly, deleteProduct); // Only admins can delete products
 
-module.exports = router;
+export default router;

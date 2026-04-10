@@ -1,4 +1,4 @@
-const prisma = require('../config/db');
+import prisma from '../config/db.js';
 
 // GET /api/products — list products with search/filter/pagination
 const getProducts = async (req, res, next) => {
@@ -80,4 +80,4 @@ const deleteProduct = async (req, res, next) => {
   }
 };
 
-module.exports = { getProducts, getProduct, createProduct, updateProduct, deleteProduct };
+export { getProducts, getProduct, createProduct, updateProduct, deleteProduct };

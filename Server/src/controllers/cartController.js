@@ -1,4 +1,4 @@
-const prisma = require('../config/db');
+import prisma from '../config/db.js';
 
 // GET /api/cart — get user's cart
 const getCart = async (req, res, next) => {
@@ -104,4 +104,4 @@ const clearCart = async (req, res, next) => {
   }
 };
 
-module.exports = { getCart, addToCart, updateCartItem, clearCart };
+export { getCart, addToCart, updateCartItem, clearCart };

@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const prisma = require('../config/db');
+import jwt from 'jsonwebtoken';
+import prisma from '../config/db.js';
 
 // Protect routes — only logged-in users can access
 const protect = async (req, res, next) => {
@@ -45,4 +45,4 @@ const adminOnly = (req, res, next) => {
   next();
 };
 
-module.exports = { protect, adminOnly };
+export { protect, adminOnly };
