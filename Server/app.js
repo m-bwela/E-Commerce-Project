@@ -41,4 +41,4 @@ app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 // Error handler
 app.use(errorHandler);
 
-export default app;
+export default app; 
