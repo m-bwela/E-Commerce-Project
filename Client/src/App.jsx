@@ -1,4 +1,10 @@
+import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Toaster } from 'react-hot-toast'
+import { fetchCurrentUser } from './store/authSlice'
+
+
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Home from '@/pages/Home'
@@ -32,12 +38,25 @@ function AppLayout() {
 }
 
 function App() {
+  const dispatch = useDispatch()
+
+  // When the app first loads (or user refreshes the page),
+  // check if there's a valid login cookie.
+  // If yes → Redux stores the user data → Navbar shows "Hi, John"
+  // If no → nothing happens, user stays as guest
+  useEffect(() => {
+    dispatch(fetchCurrentUser())
+  }, [dispatch])
+
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/*" element={<AppLayout />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/*" element={<AppLayout />} />
+      </Routes>
+      <Toaster position="top-right" reverseOrder={false} />
+    </>
   )
 }
 
