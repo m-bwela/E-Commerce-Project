@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label'
 const registerSchema = z.object({
   fullName: z.string().min(1, 'Full name is required'),
   email: z.string().email('Please enter a valid email'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
 })
 
 function Register() {
@@ -134,7 +134,7 @@ function Register() {
                 <p className="text-sm text-destructive">{errors.password.message}</p>
               )}
               <p className="text-sm text-muted-foreground">
-                Your password must be at least 6 characters long.
+                Your password must be at least 8 characters long.
               </p>
             </div>
 
