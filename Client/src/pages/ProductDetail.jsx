@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchProduct, clearProduct } from '@/store/productSlice'
+import { fetchProductById, clearProduct } from '@/store/productsSlice'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
@@ -16,7 +16,7 @@ function ProductDetail() {
   const { product, loading, error } = useSelector((state) => state.products)
 
   useEffect(() => {
-    dispatch(fetchProduct(id))
+    dispatch(fetchProductById(id))
 
     // Cleanup: clear product datawhen leaving this page
     // This prevents showing stale data if you visit another product
