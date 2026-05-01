@@ -15,7 +15,7 @@ import Checkout from '@/pages/Checkout'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Dashboard from '@/pages/admin/Dashboard'
-import NotFound from '@/pages/NotFoundPage/NotFound'
+import NotFound from '@/NotFoundPage/NotFound'
 
 function AppLayout() {
   return (
@@ -55,7 +55,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/*" element={<AppLayout />} />
       </Routes>
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="bottom-right" reverseOrder={false} />
     </>
   )
 }
