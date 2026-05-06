@@ -14,7 +14,7 @@ import Cart from '@/pages/Cart'
 import Checkout from '@/pages/Checkout'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
-import Dashboard from '@/pages/admin/Dashboard'
+import Dashboard from '@/pages/adminpages/Dashboard'
 import NotFound from '@/NotFoundPage/NotFound'
 
 function AppLayout() {
@@ -28,7 +28,9 @@ function AppLayout() {
           <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin" element={<ProtectedRoute />}>
+            <Route path="" element={<Dashboard />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
