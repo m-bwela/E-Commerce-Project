@@ -84,8 +84,8 @@ export const getStats = async (req, res, next) => {
             prisma.product.count(),
             prisma.order.count(),
             prisma.order.aggregate({
-                _sum: { total: true },
-                where: { status: { not: 'CANCELLED' } },
+                _sum: { total: true }, // Add up the "total" column
+                where: { status: { not: 'CANCELLED' } }, // Only non-cancelled orders
             }),
             prisma.order.findMany({
                 take: 5,
