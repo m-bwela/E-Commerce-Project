@@ -73,9 +73,10 @@ const authSlice = createSlice({
 
     // Initial state  - what the data looks like when the app first loads
     initialState: {
-        user: null, // null means no user is logged in, { id, fullName, email, role } = logged in
-        loading: false, // true while waiting for API response
-        error: null, // null = no error, "string" = error message
+        user: null,        // null means no user is logged in, { id, fullName, email, role } = logged in
+        loading: false,    // true while waiting for API response
+        error: null,       // null = no error, "string" = error message
+        initialized: false // false until the FIRST cookie-check completes (prevents false redirect on refresh)
     },
 
     // Regular reducers - for simple, non-async actions
@@ -132,10 +133,12 @@ const authSlice = createSlice({
             .addCase(fetchCurrentUser.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload.user; // Set user info if logged in
+                state.initialized = true;         // Cookie check is done — we have a real answer
             })
             .addCase(fetchCurrentUser.rejected, (state) => {
                 state.loading = false;
-                state.user = null; // No user info if not logged in or cookie expired/invalid
+                state.user = null;                // No user info if not logged in or cookie expired/invalid
+                state.initialized = true;         // Check is done — the answer is "not logged in"
             });
     },
 });
