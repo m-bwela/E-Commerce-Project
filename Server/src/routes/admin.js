@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getUsers, updateUserRole, updateOrderStatus } from '../controllers/adminController.js';
+import { getStats, getUsers, updateUserRole, updateOrderStatus } from '../controllers/adminController.js';
 import { protect, adminOnly } from '../middleware/auth.js';
 
 const router = Router();
