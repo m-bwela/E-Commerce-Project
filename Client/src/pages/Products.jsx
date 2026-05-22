@@ -4,9 +4,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchProducts } from '@/store/productsSlice'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useNavigate } from 'react-router-dom'
+import { addToCart } from '@/store/cartSlice'
+import toast from 'react-hot-toast'
+import { ShoppingCart } from 'lucide-react'
 
 function Products() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { user } = useSelector((state) => state.auth)
   // Read products data from Redux store
   const { products, loading, error } = useSelector((state) => state.products)
 
@@ -58,6 +64,16 @@ function Products() {
       </div>
     )
   }
+  
+  const handleAddToCart = (e, productId) => {
+    e.preventDefault();           // stop the Link from navigating
+    if (!user) {
+        toast.error("Please log in to add items to your cart");
+        navigate("/login");
+        return;
+    }
+    dispatch(addToCart({ productId, quantity: 1 }));
+};
 
   // ---PRODUCTS GRID ---
   return (
@@ -69,7 +85,7 @@ function Products() {
           <Link
             key={product.id}
             to={`/products/${product.id}`}
-            className="group rounded-lg border border-border overflow-hidden hover:shadow-lg transition-shadow"
+            className="group relative rounded-lg border border-border overflow-hidden hover:shadow-lg transition-shadow"
           >
             {/* Product Image */}
             <div className="aspect-square bg-muted overflow-hidden">
@@ -98,6 +114,12 @@ function Products() {
                 KSh {product.price.toLocaleString()}
               </p>
             </div>
+            <button
+              onClick={(e) => handleAddToCart(e, product.id)}
+              className="absolute top-2 right-2 bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition-colors"
+            >
+              <ShoppingCart className="w-5 h-5" />
+            </button>
           </Link>
         ))}
       </div>

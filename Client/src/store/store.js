@@ -7,13 +7,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authSlice";
 import productsReducer from "./productsSlice";
 import adminReducer from "./adminSlice";
+import cartReducer from "./cartSlice";
 
 const store = configureStore({
     reducer: {
         auth: authReducer, // Manages authentication state (user info, login status)
         products: productsReducer, // Manages products state (list of products, loading status, errors)
         admin: adminReducer, // Manages admin state (admin info, admin actions)
-
+        cart: cartReducer, // Manages shopping cart state (items in cart, total price)
     },
 });
 

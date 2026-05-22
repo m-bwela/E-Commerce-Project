@@ -4,10 +4,12 @@ import { ShoppingCart, User, LogOut } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { logoutUser } from '@/store/authSlice'
 import { Button } from '@/components/ui/button'
+import { selectCartItemCount } from '@/store/cartSlice'
 
 function Navbar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const cartCount = useSelector(selectCartItemCount)
   // Read the user from Redux — null means not logged in
   const { user } = useSelector((state) => state.auth)
 
@@ -38,11 +40,18 @@ function Navbar() {
         {/* Right side — cart + auth */}
         <div className="flex items-center gap-2">
           {/* Cart icon — always visible */}
-          <Link to="/cart">
-            <Button variant="ghost" size="icon">
-              <ShoppingCart className="h-5 w-5" />
-            </Button>
-          </Link>
+          <div className="relative">
+            <Link to="/cart">
+              <Button variant="ghost" size="icon">
+                <ShoppingCart className="h-5 w-5" />
+              </Button>
+            </Link>
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center pointer-events-none">
+                {cartCount}
+              </span>
+            )}
+          </div>
 
           {user ? (
             // --- LOGGED IN: show name + logout ---
