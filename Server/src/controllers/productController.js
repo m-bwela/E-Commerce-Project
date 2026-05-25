@@ -49,7 +49,14 @@ const createProduct = async (req, res, next) => {
     const image = req.file ? `/uploads/${req.file.filename}` : null;
 
     const product = await prisma.product.create({
-      data: { name, description, price, image, category, stock },
+      data: {
+        name,
+        description,
+        price:    parseFloat(price),   // FormData sends everything as string — convert to number
+        image,
+        category,
+        stock:    parseInt(stock, 10), // convert to integer
+      },
     });
     res.status(201).json(product);
   } catch (error) {
@@ -60,9 +67,17 @@ const createProduct = async (req, res, next) => {
 // PUT /api/products/:id — update (admin only)
 const updateProduct = async (req, res, next) => {
   try {
+    const { name, description, price, category, stock } = req.body;
     const product = await prisma.product.update({
       where: { id: req.params.id },
-      data: { ...req.body, image: req.file ? `/uploads/${req.file.filename}` : undefined },  // Only updates the fields that were sent
+      data: {
+        name,
+        description,
+        price:    price !== undefined ? parseFloat(price) : undefined,
+        category,
+        stock:    stock !== undefined ? parseInt(stock, 10) : undefined,
+        image:    req.file ? `/uploads/${req.file.filename}` : undefined,
+      },
     });
     res.json(product);
   } catch (error) {
