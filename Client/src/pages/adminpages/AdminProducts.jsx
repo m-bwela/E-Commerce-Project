@@ -31,7 +31,7 @@ import { PlusCircle, Pencil, Trash2, ImageIcon } from 'lucide-react';
 const EMPTY_FORM = { name: '', description: '', price: '', category: '', stock: '', image: null };
 
 // Image base URL — our backend serves uploaded files from this address
-const IMG_BASE = 'http://localhost:5000';
+const IMG_BASE = '';
 
 export default function AdminProducts() {
   const dispatch = useDispatch();

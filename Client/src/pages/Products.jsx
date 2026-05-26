@@ -78,20 +78,24 @@ function Products() {
   // ---PRODUCTS GRID ---
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Products</h1>
+      <h1
+        className="text-3xl font-bold mb-8"
+        style={{ fontFamily: "'Playfair Display', serif", color: '#f0ecff' }}
+      >Products</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
           <Link
             key={product.id}
             to={`/products/${product.id}`}
-            className="group relative rounded-lg border border-border overflow-hidden hover:shadow-lg transition-shadow"
+            className="group relative rounded-xl overflow-hidden transition-all hover:-translate-y-1"
+            style={{ border: '1px solid #2a2740', background: '#181622', boxShadow: '0 2px 16px #00000044' }}
           >
             {/* Product Image */}
             <div className="aspect-square bg-muted overflow-hidden">
               {product.image ? (
                 <img
-                  src={`http://localhost:5000${product.image}`}
+                  src={`${product.image}`}
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                 />
@@ -104,19 +108,20 @@ function Products() {
 
             {/* Product Info */}
             <div className="p-4 space-y-2">
-              <p className="text-xs text-muted-foreground uppercase tracking-wide">
+              <p className="text-xs uppercase tracking-wide" style={{ color: '#c9a84c', fontWeight: 600 }}>
                 {product.category}
               </p>
-              <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+              <h3 className="font-semibold" style={{ color: '#e8e4f0' }}>
                 {product.name}
               </h3>
-              <p className="text-lg font-bold">
+              <p className="text-lg font-bold" style={{ color: '#c9a84c' }}>
                 KSh {product.price.toLocaleString()}
               </p>
             </div>
             <button
               onClick={(e) => handleAddToCart(e, product.id)}
-              className="absolute top-2 right-2 bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition-colors"
+              className="absolute top-2 right-2 text-white p-2 rounded-full transition-all hover:scale-110"
+              style={{ background: 'linear-gradient(135deg, #c9a84c, #e8c96a)', color: '#1a1400', boxShadow: '0 2px 12px #c9a84c55' }}
             >
               <ShoppingCart className="w-5 h-5" />
             </button>

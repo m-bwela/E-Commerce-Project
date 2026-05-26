@@ -10,4 +10,20 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    proxy: {
+      // Any request starting with /api is forwarded to the backend
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,   // rewrites the Host header to localhost:5000
+        secure: false,
+      },
+      // Forward /uploads so product/avatar images still load
+      '/uploads': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 })

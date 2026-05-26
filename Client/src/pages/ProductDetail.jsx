@@ -73,7 +73,7 @@ function ProductDetail() {
         <div className='aspect-square bg-muted rounded-lg overflow-hidden'>
           {product.image ? (
             <img
-              src={`http://localhost:5000${product.image}`}
+              src={`${product.image}`}
               alt={product.name}
               className='w-full h-full object-cover'
             />

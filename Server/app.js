@@ -20,14 +20,28 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Security
-app.use(helmet());
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+// CORS must come FIRST — before helmet, before everything.
+// The browser sends a preflight OPTIONS request before PATCH/POST/DELETE.
+// If helmet runs first, it adds headers that block cross-origin responses.
+const corsOptions = {
+  origin: process.env.CLIENT_URL,   // e.g. http://localhost:5173
+  credentials: true,                 // allow cookies to be sent cross-origin
+  methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+app.use(cors(corsOptions));
+// Explicitly handle all preflight OPTIONS requests so cookies flow correctly
+app.options(/.*/, cors(corsOptions));
+
+// Cookie parser early — protect middleware needs req.cookies before anything else
+app.use(cookieParser());
+
+// Security headers — runs after CORS so it doesn't block preflight responses
+app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
 
 // Body parsing
 app.use(express.json());
-app.use(cookieParser());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes

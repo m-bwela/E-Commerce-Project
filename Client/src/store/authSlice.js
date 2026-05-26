@@ -124,6 +124,9 @@ const authSlice = createSlice({
             .addCase(logoutUser.fulfilled, (state) => {
                 state.user = null; // Clear user info on logout
             })
+            .addCase(logoutUser.rejected, (state) => {
+                state.user = null; // Clear user even if API call failed (stale cookie etc.)
+            })
 
             // ---FETCH CURRENT USER---
             .addCase(fetchCurrentUser.pending, (state) => {

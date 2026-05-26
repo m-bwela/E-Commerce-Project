@@ -1,10 +1,17 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { ShoppingCart, User, LogOut } from 'lucide-react'
+import { ShoppingCart, User, LogOut, ChevronDown } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { logoutUser } from '@/store/authSlice'
 import { Button } from '@/components/ui/button'
 import { selectCartItemCount } from '@/store/cartSlice'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 function Navbar() {
   const dispatch = useDispatch()
@@ -20,10 +27,10 @@ function Navbar() {
   }
 
   return (
-    <header className="border-b border-border bg-background sticky top-0 z-50">
+    <header className="border-b border-border bg-background sticky top-0 z-50 backdrop-blur-sm">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="text-xl font-bold text-foreground">
+        <Link to="/" className="text-xl font-bold" style={{ fontFamily: "'Playfair Display', serif", color: '#c9a84c' }}>
           GenZiiShop
         </Link>
 
@@ -31,7 +38,7 @@ function Navbar() {
         <nav className="hidden md:flex items-center gap-6">
           <Link
             to="/products"
-            className="text-muted-foreground hover:text-foreground transition-colors"
+            className="text-muted-foreground transition-colors hover:text-primary"
           >
             Products
           </Link>
@@ -54,15 +61,37 @@ function Navbar() {
           </div>
 
           {user ? (
-            // --- LOGGED IN: show name + logout ---
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground hidden sm:inline">
-                Hi, {user.fullName.split(' ')[0]}
-              </span>
-              <Button variant="ghost" size="icon" onClick={handleLogout}>
-                <LogOut className="h-5 w-5" />
-              </Button>
-            </div>
+            // --- LOGGED IN: dropdown menu ---
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="flex items-center gap-1 px-2">
+                  <User className="h-5 w-5" />
+                  <span className="hidden sm:inline text-sm">
+                    {user.fullName.split(' ')[0]}
+                  </span>
+                  <ChevronDown className="h-4 w-4 opacity-60" />
+                </Button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end" className="w-44">
+                <DropdownMenuItem asChild>
+                  <Link to="/profile" className="flex items-center gap-2 cursor-pointer">
+                    <User className="h-4 w-4" />
+                    My Profile
+                  </Link>
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 text-red-500 focus:text-red-500 cursor-pointer"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             // --- GUEST: show login button ---
             <Link to="/login">

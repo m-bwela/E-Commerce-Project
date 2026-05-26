@@ -20,3 +20,8 @@ export const logoutAPI = () => API.post('/auth/logout');
 // If not, it returns 401 (unauthorized)
 export const getMeAPI = () => API.get('/auth/me');
 
+export const updateProfileAPI = (data) => API.patch('/auth/profile', data); // data can be { fullName, email, phone, location, bio, avatar (file) }
+
+export const changePasswordAPI = (data) => API.patch('/auth/password', data); // data is { currentPassword, newPassword }
+
+export const deleteAccountAPI = () => API.delete('/auth/account'); // no data needed, just the cookie to identify the user

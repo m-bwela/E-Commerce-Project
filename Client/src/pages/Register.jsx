@@ -53,9 +53,12 @@ function Register() {
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
-      {/* Left panel — dark branding */}
-      <div className="hidden lg:flex flex-col justify-between bg-zinc-900 p-10 text-white">
-        <div className="flex items-center gap-2 text-lg font-medium">
+      {/* Left panel — luxury branding */}
+      <div
+        className="hidden lg:flex flex-col justify-between p-10 text-white"
+        style={{ background: 'linear-gradient(160deg, #0a0a0f 60%, #1a1428 100%)' }}
+      >
+        <div className="flex items-center gap-2 text-lg font-medium" style={{ fontFamily: "'Playfair Display', serif", color: '#c9a84c' }}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -71,11 +74,11 @@ function Register() {
           GenZiiShop
         </div>
         <blockquote className="space-y-2">
-          <p className="text-lg">
+          <p className="text-lg" style={{ color: '#e8e4f0', fontFamily: "'Playfair Display', serif", fontStyle: 'italic' }}>
             &ldquo;Shop the best products at the best prices, delivered right to
             your doorstep.&rdquo;
           </p>
-          <footer className="text-sm text-zinc-400">GenZiiShop Team</footer>
+          <footer className="text-sm" style={{ color: '#9b96b0' }}>GenZiiShop Team</footer>
         </blockquote>
       </div>
 

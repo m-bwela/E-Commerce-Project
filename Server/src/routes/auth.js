@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import { register, login, logout, getMe } from '../controllers/authController.js';
+import { register, login, logout, getMe, updateProfile, changePassword, deleteAccount } from '../controllers/authController.js';
 import { protect } from '../middleware/auth.js';
 import validate from '../middleware/validate.js';
+import upload from '../middleware/upload.js';
 
 const router = Router();
 
@@ -19,7 +20,11 @@ router.post('/login', [
 ], validate, login);
 // Flow: validate input -> check errors -> login controller
 
-router.post('/logout', protect, logout);
-router.get('/me', protect, getMe); // protect = must be logged in
+router.post('/logout', logout);
+router.get('/me', protect, getMe);
+
+router.patch('/profile', protect, upload.single('avatar'), updateProfile);
+router.patch('/password', protect, changePassword);
+router.delete('/account', protect, deleteAccount);
 
 export default router;

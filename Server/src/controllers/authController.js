@@ -103,4 +103,78 @@ const getMe = async (req, res) => {
   res.json({ user: req.user });
 };
 
-export { register, login, logout, getMe };
+// --- UPDATE PROFILE ---
+const updateProfile = async (req, res, next) => {
+  try {
+    const { fullName, email, phone, location, bio } = req.body;
+    const avatar = req.file ? `/uploads/${req.file.filename}` : undefined;
+
+    // If email is changing, make sure it's not already taken by someone else
+    if (email && email !== req.user.email) {
+      const existing = await prisma.user.findUnique({ where: { email } });
+      if (existing) {
+        res.status(400);
+        throw new Error('Email already in use');
+      }
+    }
+
+    const updated = await prisma.user.update({
+      where: { id: req.user.id },
+      data: {
+        ...(fullName  && { fullName }),
+        ...(email     && { email }),
+        ...(phone     !== undefined && { phone }),
+        ...(location  !== undefined && { location }),
+        ...(bio       !== undefined && { bio }),
+        ...(avatar    && { avatar }),
+      },
+      select: { id: true, fullName: true, email: true, role: true, phone: true, location: true, bio: true, avatar: true },
+    });
+
+    res.json({ user: updated });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// --- CHANGE PASSWORD ---
+const changePassword = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    // Fetch user with password hash
+    const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      res.status(400);
+      throw new Error('Current password is incorrect');
+    }
+
+    if (newPassword.length < 8) {
+      res.status(400);
+      throw new Error('New password must be at least 8 characters');
+    }
+
+    const hashed = await bcrypt.hash(newPassword, 12);
+    await prisma.user.update({ where: { id: req.user.id }, data: { password: hashed } });
+
+    res.json({ message: 'Password updated successfully' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// --- DELETE ACCOUNT ---
+const deleteAccount = async (req, res, next) => {
+  try {
+    await prisma.user.delete({ where: { id: req.user.id } });
+    // Clear the auth cookie
+    res.cookie('token', '', { httpOnly: true, expires: new Date(0) });
+    res.json({ message: 'Account deleted' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { register, login, logout, getMe, updateProfile, changePassword, deleteAccount };

@@ -4,8 +4,8 @@ import axios from 'axios';
 // Think of this like saving a contact in your phone —
 // instead of dialing the full number every time, you just tap the name.
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api',  // Every request starts with this URL
-  withCredentials: true,                  // Send cookies with every request (needed for JWT auth)
+  baseURL: '/api',        // relative — hits localhost:5173/api which Vite proxies to localhost:5000/api
+  withCredentials: true,  // still needed so cookies are included
 });
 
 export default API;

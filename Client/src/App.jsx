@@ -14,6 +14,7 @@ import Cart from '@/pages/Cart'
 import Checkout from '@/pages/Checkout'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
+import ProfileManagement from '@/pages/Profilemanagement'
 import NotFound from '@/NotFoundPage/NotFound'
 
 // ── Admin infrastructure imports ───────────────────────────────────────────
@@ -42,6 +43,7 @@ function AppLayout() {
           <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/profile" element={<ProfileManagement />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
@@ -101,7 +103,41 @@ function App() {
       </Routes>
 
       {/* Toast notifications — shows pop-up messages like "Product deleted!" */}
-      <Toaster position="bottom-right" reverseOrder={false} />
+      <Toaster
+        position="bottom-right"
+        reverseOrder={false}
+        toastOptions={{
+          // Default style for all toasts
+          style: {
+            background: '#181622',
+            color: '#e8e4f0',
+            border: '1px solid #2a2740',
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: '14px',
+            borderRadius: '12px',
+            boxShadow: '0 8px 32px #00000066',
+          },
+          // ✅ Success — gold icon
+          success: {
+            iconTheme: {
+              primary: '#c9a84c',
+              secondary: '#1a1400',
+            },
+          },
+          // ❌ Error — red icon, slightly red-tinted border
+          error: {
+            style: {
+              background: '#1f0f0f',
+              border: '1px solid #4a1a1a',
+              color: '#e8e4f0',
+            },
+            iconTheme: {
+              primary: '#e74c3c',
+              secondary: '#fff',
+            },
+          },
+        }}
+      />
     </>
   )
 }

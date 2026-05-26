@@ -21,7 +21,7 @@ const protect = async (req, res, next) => {
     // Step 4: Find the user in the database
     const user = await prisma.user.findUnique({
       where: { id: decoded.id },
-      select: { id: true, fullName: true, email: true, role: true }
+      select: { id: true, fullName: true, email: true, role: true, phone: true, location: true, bio: true, avatar: true, createdAt: true }
       // select = only return these fields (don't return the password!)
     });
 
