@@ -22,11 +22,11 @@ const STATUS_OPTIONS = ['PENDING', 'PAID', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
 // Colour classes for each status — applied to the <select> dropdown
 // so the admin can see at a glance what state each order is in
 const STATUS_STYLES = {
-  PENDING:   'bg-yellow-100 text-yellow-800 border-yellow-200',
-  PAID:      'bg-blue-100   text-blue-800   border-blue-200',
-  SHIPPED:   'bg-purple-100 text-purple-800 border-purple-200',
-  DELIVERED: 'bg-green-100  text-green-800  border-green-200',
-  CANCELLED: 'bg-red-100    text-red-800    border-red-200',
+  PENDING:   'bg-[#2a2200] text-[#e8c96a] border-[#c9a84c44]',
+  PAID:      'bg-[#0a1f2e] text-[#60a5fa] border-[#3b82f644]',
+  SHIPPED:   'bg-[#1a0a2e] text-[#c084fc] border-[#a855f744]',
+  DELIVERED: 'bg-[#0a1f15] text-[#4ade80] border-[#22c55e44]',
+  CANCELLED: 'bg-[#2a0a0a] text-[#f87171] border-[#ef444444]',
 };
 
 export default function AdminOrders() {
@@ -65,17 +65,17 @@ export default function AdminOrders() {
 
       {/* Page header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Orders</h1>
-        <p className="text-sm text-gray-500 mt-0.5">
+        <h1 className="text-2xl font-bold" style={{ fontFamily: "'Playfair Display', serif", color: '#c9a84c' }}>Orders</h1>
+        <p className="text-sm mt-0.5" style={{ color: '#9b96b0' }}>
           {orders.length} total order{orders.length !== 1 ? 's' : ''}
         </p>
       </div>
 
       {/* ── ORDERS TABLE ──────────────────────────────────────────────── */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div className="rounded-xl overflow-hidden" style={{ background: '#181622', border: '1px solid #2a2740' }}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-xs text-gray-500 uppercase tracking-wide">
+            <thead className="text-xs uppercase tracking-wide" style={{ background: '#0f0e18', color: '#9b96b0' }}>
               <tr>
                 <th className="px-5 py-3 text-left font-medium">Customer</th>
                 <th className="px-5 py-3 text-left font-medium">Items</th>
@@ -84,35 +84,38 @@ export default function AdminOrders() {
                 <th className="px-5 py-3 text-left font-medium">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody style={{ borderTop: '1px solid #2a2740' }}>
               {loading && orders.length === 0 ? (
                 // Skeleton loading rows
                 [...Array(5)].map((_, i) => (
-                  <tr key={i} className="animate-pulse">
-                    <td className="px-5 py-3"><div className="h-4 w-36 bg-gray-200 rounded" /></td>
-                    <td className="px-5 py-3"><div className="h-4 w-48 bg-gray-200 rounded" /></td>
-                    <td className="px-5 py-3"><div className="h-4 w-20 bg-gray-200 rounded ml-auto" /></td>
-                    <td className="px-5 py-3"><div className="h-4 w-24 bg-gray-200 rounded" /></td>
-                    <td className="px-5 py-3"><div className="h-8 w-28 bg-gray-200 rounded" /></td>
+                  <tr key={i} className="animate-pulse" style={{ borderBottom: '1px solid #2a2740' }}>
+                    <td className="px-5 py-3"><div className="h-4 w-36 rounded" style={{ background: '#2a2740' }} /></td>
+                    <td className="px-5 py-3"><div className="h-4 w-48 rounded" style={{ background: '#2a2740' }} /></td>
+                    <td className="px-5 py-3"><div className="h-4 w-20 rounded ml-auto" style={{ background: '#2a2740' }} /></td>
+                    <td className="px-5 py-3"><div className="h-4 w-24 rounded" style={{ background: '#2a2740' }} /></td>
+                    <td className="px-5 py-3"><div className="h-8 w-28 rounded" style={{ background: '#2a2740' }} /></td>
                   </tr>
                 ))
               ) : orders.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-5 py-12 text-center text-gray-400">
+                  <td colSpan={5} className="px-5 py-12 text-center" style={{ color: '#9b96b0' }}>
                     No orders have been placed yet.
                   </td>
                 </tr>
               ) : (
                 orders.map((order) => (
-                  <tr key={order.id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={order.id} className="transition-colors" style={{ borderBottom: '1px solid #2a2740' }}
+                    onMouseEnter={e => e.currentTarget.style.background = '#1e1b2e'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
                     {/* Customer info */}
                     <td className="px-5 py-3">
-                      <p className="font-medium text-gray-800">{order.user?.fullName || 'Unknown'}</p>
-                      <p className="text-xs text-gray-400">{order.user?.email}</p>
+                      <p className="font-medium" style={{ color: '#e8e4f0' }}>{order.user?.fullName || 'Unknown'}</p>
+                      <p className="text-xs" style={{ color: '#9b96b0' }}>{order.user?.email}</p>
                     </td>
 
                     {/* Items list — product names joined by commas, truncated if long */}
-                    <td className="px-5 py-3 text-gray-600 max-w-xs">
+                    <td className="px-5 py-3 max-w-xs" style={{ color: '#9b96b0' }}>
                       <p className="truncate">
                         {order.items?.map((item) => {
                           const name = item.product?.name || 'Item';
@@ -122,12 +125,12 @@ export default function AdminOrders() {
                     </td>
 
                     {/* Order total */}
-                    <td className="px-5 py-3 text-right font-medium text-gray-800">
+                    <td className="px-5 py-3 text-right font-medium" style={{ color: '#c9a84c' }}>
                       {Number(order.total).toLocaleString()}
                     </td>
 
                     {/* Order date */}
-                    <td className="px-5 py-3 text-gray-500 whitespace-nowrap">
+                    <td className="px-5 py-3 whitespace-nowrap" style={{ color: '#9b96b0' }}>
                       {new Date(order.createdAt).toLocaleDateString('en-KE', {
                         month: 'short', day: 'numeric', year: 'numeric'
                       })}
@@ -141,8 +144,8 @@ export default function AdminOrders() {
                         value={order.status}
                         onChange={(e) => handleStatusChange(order.id, e.target.value)}
                         className={`text-xs font-medium px-2.5 py-1.5 rounded-lg border cursor-pointer
-                                    focus:outline-none focus:ring-2 focus:ring-zinc-400 transition-colors
-                                    ${STATUS_STYLES[order.status] || 'bg-gray-100 text-gray-700'}`}
+                                    focus:outline-none focus:ring-2 focus:ring-[#c9a84c] transition-colors
+                                    ${STATUS_STYLES[order.status] || 'bg-[#1e1b2e] text-[#9b96b0]'}`}
                       >
                         {STATUS_OPTIONS.map((s) => (
                           <option key={s} value={s}>{s}</option>

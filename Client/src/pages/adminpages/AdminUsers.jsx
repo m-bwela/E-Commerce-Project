@@ -57,17 +57,17 @@ export default function AdminUsers() {
 
       {/* Page header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Users</h1>
-        <p className="text-sm text-gray-500 mt-0.5">
+        <h1 className="text-2xl font-bold" style={{ fontFamily: "'Playfair Display', serif", color: '#c9a84c' }}>Users</h1>
+        <p className="text-sm mt-0.5" style={{ color: '#9b96b0' }}>
           {users.length} registered user{users.length !== 1 ? 's' : ''}
         </p>
       </div>
 
       {/* ── USERS TABLE ───────────────────────────────────────────────── */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div className="rounded-xl overflow-hidden" style={{ background: '#181622', border: '1px solid #2a2740' }}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-xs text-gray-500 uppercase tracking-wide">
+            <thead className="text-xs uppercase tracking-wide" style={{ background: '#0f0e18', color: '#9b96b0' }}>
               <tr>
                 <th className="px-5 py-3 text-left font-medium">Full Name</th>
                 <th className="px-5 py-3 text-left font-medium">Email</th>
@@ -75,20 +75,20 @@ export default function AdminUsers() {
                 <th className="px-5 py-3 text-left font-medium">Role</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody style={{ borderTop: '1px solid #2a2740' }}>
               {loading && users.length === 0 ? (
                 // Skeleton loading rows
                 [...Array(5)].map((_, i) => (
-                  <tr key={i} className="animate-pulse">
-                    <td className="px-5 py-3"><div className="h-4 w-36 bg-gray-200 rounded" /></td>
-                    <td className="px-5 py-3"><div className="h-4 w-48 bg-gray-200 rounded" /></td>
-                    <td className="px-5 py-3"><div className="h-4 w-24 bg-gray-200 rounded" /></td>
-                    <td className="px-5 py-3"><div className="h-8 w-24 bg-gray-200 rounded" /></td>
+                  <tr key={i} className="animate-pulse" style={{ borderBottom: '1px solid #2a2740' }}>
+                    <td className="px-5 py-3"><div className="h-4 w-36 rounded" style={{ background: '#2a2740' }} /></td>
+                    <td className="px-5 py-3"><div className="h-4 w-48 rounded" style={{ background: '#2a2740' }} /></td>
+                    <td className="px-5 py-3"><div className="h-4 w-24 rounded" style={{ background: '#2a2740' }} /></td>
+                    <td className="px-5 py-3"><div className="h-8 w-24 rounded" style={{ background: '#2a2740' }} /></td>
                   </tr>
                 ))
               ) : users.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-5 py-12 text-center text-gray-400">
+                  <td colSpan={4} className="px-5 py-12 text-center" style={{ color: '#9b96b0' }}>
                     No users found.
                   </td>
                 </tr>
@@ -99,30 +99,33 @@ export default function AdminUsers() {
                   const isAdmin = user.role === 'ADMIN';
 
                   return (
-                    <tr key={user.id} className="hover:bg-gray-50 transition-colors">
+                    <tr key={user.id} className="transition-colors" style={{ borderBottom: '1px solid #2a2740' }}
+                      onMouseEnter={e => e.currentTarget.style.background = '#1e1b2e'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    >
                       {/* Full name */}
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-2">
                           {/* Small avatar circle with first letter of name */}
-                          <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center flex-shrink-0">
-                            <span className="text-xs font-bold text-zinc-600">
+                          <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#2a2740' }}>
+                            <span className="text-xs font-bold" style={{ color: '#c9a84c' }}>
                               {user.fullName?.charAt(0)?.toUpperCase() || '?'}
                             </span>
                           </div>
                           <div>
-                            <p className="font-medium text-gray-800">{user.fullName}</p>
+                            <p className="font-medium" style={{ color: '#e8e4f0' }}>{user.fullName}</p>
                             {isSelf && (
-                              <p className="text-xs text-zinc-400">(You)</p>
+                              <p className="text-xs" style={{ color: '#9b96b0' }}>(You)</p>
                             )}
                           </div>
                         </div>
                       </td>
 
                       {/* Email */}
-                      <td className="px-5 py-3 text-gray-500">{user.email}</td>
+                      <td className="px-5 py-3" style={{ color: '#9b96b0' }}>{user.email}</td>
 
                       {/* Join date */}
-                      <td className="px-5 py-3 text-gray-500 whitespace-nowrap">
+                      <td className="px-5 py-3 whitespace-nowrap" style={{ color: '#9b96b0' }}>
                         {new Date(user.createdAt).toLocaleDateString('en-KE', {
                           month: 'short', day: 'numeric', year: 'numeric'
                         })}
@@ -142,11 +145,11 @@ export default function AdminUsers() {
                             'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium',
                             'transition-colors border',
                             isSelf
-                              ? 'opacity-50 cursor-not-allowed'       // disabled state
-                              : 'cursor-pointer hover:opacity-80',    // clickable state
+                              ? 'opacity-50 cursor-not-allowed'
+                              : 'cursor-pointer hover:opacity-80',
                             isAdmin
-                              ? 'bg-purple-100 text-purple-800 border-purple-200'  // ADMIN style
-                              : 'bg-gray-100   text-gray-700   border-gray-200',   // USER style
+                              ? 'bg-[#1a0a2e] text-[#c084fc] border-[#a855f744]'
+                              : 'bg-[#1e1b2e] text-[#9b96b0] border-[#2a2740]',
                           ].join(' ')}
                         >
                           {isAdmin

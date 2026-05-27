@@ -29,10 +29,10 @@ function Login() {
     resolver: zodResolver(loginSchema),
   })
 
-  // If user is already logged in, redirect to home
+  // If user is already logged in, redirect to the right place
   useEffect(() => {
     if (user) {
-      navigate('/')
+      navigate(user.role === 'ADMIN' ? '/admin' : '/')
     }
   }, [user, navigate])
 

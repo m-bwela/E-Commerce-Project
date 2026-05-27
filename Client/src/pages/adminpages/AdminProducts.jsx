@@ -146,12 +146,13 @@ export default function AdminProducts() {
       {/* Page header + Add button */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Products</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{products.length} product{products.length !== 1 ? 's' : ''} in catalog</p>
+          <h1 className="text-2xl font-bold" style={{ fontFamily: "'Playfair Display', serif", color: '#c9a84c' }}>Products</h1>
+          <p className="text-sm mt-0.5" style={{ color: '#9b96b0' }}>{products.length} product{products.length !== 1 ? 's' : ''} in catalog</p>
         </div>
         <button
           onClick={openCreate}
-          className="flex items-center gap-2 bg-zinc-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-zinc-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          style={{ background: 'linear-gradient(135deg, #c9a84c, #e8c96a, #b8922a)', color: '#1a1400', fontWeight: 600 }}
         >
           <PlusCircle className="w-4 h-4" />
           Add Product
@@ -159,10 +160,10 @@ export default function AdminProducts() {
       </div>
 
       {/* ── PRODUCTS TABLE ─────────────────────────────────────────────── */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div className="rounded-xl overflow-hidden" style={{ background: '#181622', border: '1px solid #2a2740' }}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-xs text-gray-500 uppercase tracking-wide">
+            <thead className="text-xs uppercase tracking-wide" style={{ background: '#0f0e18', color: '#9b96b0' }}>
               <tr>
                 <th className="px-5 py-3 text-left font-medium">Image</th>
                 <th className="px-5 py-3 text-left font-medium">Name</th>
@@ -172,62 +173,72 @@ export default function AdminProducts() {
                 <th className="px-5 py-3 text-right font-medium">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody style={{ borderTop: '1px solid #2a2740' }}>
               {loading && products.length === 0 ? (
                 // Skeleton rows while loading
                 [...Array(4)].map((_, i) => (
-                  <tr key={i} className="animate-pulse">
-                    <td className="px-5 py-3"><div className="w-10 h-10 bg-gray-200 rounded-lg" /></td>
-                    <td className="px-5 py-3"><div className="h-4 w-40 bg-gray-200 rounded" /></td>
-                    <td className="px-5 py-3"><div className="h-4 w-24 bg-gray-200 rounded" /></td>
-                    <td className="px-5 py-3"><div className="h-4 w-16 bg-gray-200 rounded ml-auto" /></td>
-                    <td className="px-5 py-3"><div className="h-4 w-10 bg-gray-200 rounded ml-auto" /></td>
-                    <td className="px-5 py-3"><div className="h-4 w-20 bg-gray-200 rounded ml-auto" /></td>
+                  <tr key={i} className="animate-pulse" style={{ borderBottom: '1px solid #2a2740' }}>
+                    <td className="px-5 py-3"><div className="w-10 h-10 rounded-lg" style={{ background: '#2a2740' }} /></td>
+                    <td className="px-5 py-3"><div className="h-4 w-40 rounded" style={{ background: '#2a2740' }} /></td>
+                    <td className="px-5 py-3"><div className="h-4 w-24 rounded" style={{ background: '#2a2740' }} /></td>
+                    <td className="px-5 py-3"><div className="h-4 w-16 rounded ml-auto" style={{ background: '#2a2740' }} /></td>
+                    <td className="px-5 py-3"><div className="h-4 w-10 rounded ml-auto" style={{ background: '#2a2740' }} /></td>
+                    <td className="px-5 py-3"><div className="h-4 w-20 rounded ml-auto" style={{ background: '#2a2740' }} /></td>
                   </tr>
                 ))
               ) : products.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-5 py-12 text-center text-gray-400">
+                  <td colSpan={6} className="px-5 py-12 text-center" style={{ color: '#9b96b0' }}>
                     No products yet. Click "Add Product" to create one.
                   </td>
                 </tr>
               ) : (
                 products.map((product) => (
-                  <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={product.id} className="transition-colors" style={{ borderBottom: '1px solid #2a2740' }}
+                    onMouseEnter={e => e.currentTarget.style.background = '#1e1b2e'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
                     {/* Product thumbnail image */}
                     <td className="px-5 py-3">
                       {product.image ? (
                         <img
                           src={`${IMG_BASE}${product.image}`}
                           alt={product.name}
-                          className="w-10 h-10 object-cover rounded-lg border border-gray-200"
+                          className="w-10 h-10 object-cover rounded-lg"
+                          style={{ border: '1px solid #2a2740' }}
                           onError={(e) => { e.target.style.display = 'none'; }}
                         />
                       ) : (
-                        <div className="w-10 h-10 rounded-lg border border-gray-200 bg-gray-100 flex items-center justify-center">
-                          <ImageIcon className="w-4 h-4 text-gray-400" />
+                        <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ border: '1px solid #2a2740', background: '#1e1b2e' }}>
+                          <ImageIcon className="w-4 h-4" style={{ color: '#9b96b0' }} />
                         </div>
                       )}
                     </td>
-                    <td className="px-5 py-3 font-medium text-gray-800">{product.name}</td>
-                    <td className="px-5 py-3 text-gray-500">{product.category || '—'}</td>
-                    <td className="px-5 py-3 text-right font-medium text-gray-800">
+                    <td className="px-5 py-3 font-medium" style={{ color: '#e8e4f0' }}>{product.name}</td>
+                    <td className="px-5 py-3" style={{ color: '#9b96b0' }}>{product.category || '—'}</td>
+                    <td className="px-5 py-3 text-right font-medium" style={{ color: '#c9a84c' }}>
                       {Number(product.price).toLocaleString()}
                     </td>
-                    <td className="px-5 py-3 text-right text-gray-600">{product.stock}</td>
+                    <td className="px-5 py-3 text-right" style={{ color: '#9b96b0' }}>{product.stock}</td>
                     {/* Edit + Delete buttons */}
                     <td className="px-5 py-3">
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => openEdit(product)}
-                          className="p-1.5 rounded-lg text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                          className="p-1.5 rounded-lg transition-colors"
+                          style={{ color: '#9b96b0' }}
+                          onMouseEnter={e => { e.currentTarget.style.background = '#0a1f2e'; e.currentTarget.style.color = '#60a5fa'; }}
+                          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#9b96b0'; }}
                           title="Edit product"
                         >
                           <Pencil className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDelete(product)}
-                          className="p-1.5 rounded-lg text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+                          className="p-1.5 rounded-lg transition-colors"
+                          style={{ color: '#9b96b0' }}
+                          onMouseEnter={e => { e.currentTarget.style.background = '#2a0a0a'; e.currentTarget.style.color = '#f87171'; }}
+                          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#9b96b0'; }}
                           title="Delete product"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -250,16 +261,19 @@ export default function AdminProducts() {
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
           onClick={(e) => { if (e.target === e.currentTarget) closeModal(); }}
         >
-          {/* White modal box */}
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+          {/* Modal box */}
+          <div className="rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" style={{ background: '#181622', border: '1px solid #2a2740' }}>
             {/* Modal header */}
-            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">
+            <div className="px-6 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid #2a2740' }}>
+              <h2 className="text-lg font-semibold" style={{ color: '#e8e4f0' }}>
                 {editingProduct ? 'Edit Product' : 'Add New Product'}
               </h2>
               <button
                 onClick={closeModal}
-                className="text-gray-400 hover:text-gray-600 text-xl font-bold leading-none"
+                className="text-xl font-bold leading-none transition-colors"
+                style={{ color: '#9b96b0' }}
+                onMouseEnter={e => e.currentTarget.style.color = '#e8e4f0'}
+                onMouseLeave={e => e.currentTarget.style.color = '#9b96b0'}
               >
                 ×
               </button>
@@ -269,8 +283,8 @@ export default function AdminProducts() {
             <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
               {/* Product Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Product Name <span className="text-red-500">*</span>
+                <label className="block text-sm font-medium mb-1" style={{ color: '#e8e4f0' }}>
+                  Product Name <span style={{ color: '#f87171' }}>*</span>
                 </label>
                 <input
                   type="text"
@@ -279,28 +293,30 @@ export default function AdminProducts() {
                   onChange={handleChange}
                   required
                   placeholder="e.g. Nike Air Max"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500"
+                  className="w-full rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
+                  style={{ background: '#16141f', border: '1px solid #2a2740', color: '#e8e4f0' }}
                 />
               </div>
 
               {/* Description */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <label className="block text-sm font-medium mb-1" style={{ color: '#e8e4f0' }}>Description</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
                   rows={3}
                   placeholder="Brief product description..."
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 resize-none"
+                  className="w-full rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#c9a84c] resize-none"
+                  style={{ background: '#16141f', border: '1px solid #2a2740', color: '#e8e4f0' }}
                 />
               </div>
 
               {/* Price + Stock side by side */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Price (KSh) <span className="text-red-500">*</span>
+                  <label className="block text-sm font-medium mb-1" style={{ color: '#e8e4f0' }}>
+                    Price (KSh) <span style={{ color: '#f87171' }}>*</span>
                   </label>
                   <input
                     type="number"
@@ -311,12 +327,13 @@ export default function AdminProducts() {
                     min="0"
                     step="0.01"
                     placeholder="0.00"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500"
+                    className="w-full rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
+                    style={{ background: '#16141f', border: '1px solid #2a2740', color: '#e8e4f0' }}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Stock <span className="text-red-500">*</span>
+                  <label className="block text-sm font-medium mb-1" style={{ color: '#e8e4f0' }}>
+                    Stock <span style={{ color: '#f87171' }}>*</span>
                   </label>
                   <input
                     type="number"
@@ -326,37 +343,40 @@ export default function AdminProducts() {
                     required
                     min="0"
                     placeholder="0"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500"
+                    className="w-full rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
+                    style={{ background: '#16141f', border: '1px solid #2a2740', color: '#e8e4f0' }}
                   />
                 </div>
               </div>
 
               {/* Category */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                <label className="block text-sm font-medium mb-1" style={{ color: '#e8e4f0' }}>Category</label>
                 <input
                   type="text"
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
                   placeholder="e.g. Footwear, Electronics..."
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500"
+                  className="w-full rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
+                  style={{ background: '#16141f', border: '1px solid #2a2740', color: '#e8e4f0' }}
                 />
               </div>
 
               {/* Image file picker */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Product Image {editingProduct && <span className="text-gray-400 font-normal">(leave blank to keep existing)</span>}
+                <label className="block text-sm font-medium mb-1" style={{ color: '#e8e4f0' }}>
+                  Product Image {editingProduct && <span className="font-normal" style={{ color: '#9b96b0' }}>(leave blank to keep existing)</span>}
                 </label>
                 <input
                   type="file"
                   name="image"
                   accept="image/jpeg,image/png,image/webp"
                   onChange={handleChange}
-                  className="w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3
-                             file:rounded-lg file:border-0 file:bg-zinc-100 file:text-zinc-700
-                             file:text-sm file:font-medium hover:file:bg-zinc-200 cursor-pointer"
+                  className="w-full text-sm file:mr-3 file:py-1.5 file:px-3
+                             file:rounded-lg file:border-0
+                             file:text-sm file:font-medium cursor-pointer"
+                  style={{ color: '#9b96b0' }}
                 />
                 {/* Preview current image when editing */}
                 {editingProduct?.image && !formData.image && (
@@ -364,9 +384,10 @@ export default function AdminProducts() {
                     <img
                       src={`${IMG_BASE}${editingProduct.image}`}
                       alt="Current"
-                      className="w-16 h-16 object-cover rounded-lg border border-gray-200"
+                      className="w-16 h-16 object-cover rounded-lg"
+                      style={{ border: '1px solid #2a2740' }}
                     />
-                    <span className="text-xs text-gray-400">Current image</span>
+                    <span className="text-xs" style={{ color: '#9b96b0' }}>Current image</span>
                   </div>
                 )}
               </div>
@@ -376,14 +397,18 @@ export default function AdminProducts() {
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="px-4 py-2 text-sm font-medium rounded-lg transition-colors"
+                  style={{ color: '#9b96b0', border: '1px solid #2a2740', background: 'transparent' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#1e1b2e'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-4 py-2 text-sm font-medium text-white bg-zinc-900 rounded-lg hover:bg-zinc-700 transition-colors disabled:opacity-50"
+                  className="px-4 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+                  style={{ background: 'linear-gradient(135deg, #c9a84c, #e8c96a, #b8922a)', color: '#1a1400', fontWeight: 600 }}
                 >
                   {submitting ? 'Saving...' : editingProduct ? 'Save Changes' : 'Create Product'}
                 </button>

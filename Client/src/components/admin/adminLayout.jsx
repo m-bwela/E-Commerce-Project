@@ -64,15 +64,15 @@ export default function AdminLayout() {
     <div className="min-h-screen flex">
 
       {/* ── SIDEBAR (LEFT) ─────────────────────────────────────────────── */}
-      <aside className="w-64 bg-zinc-900 text-white flex flex-col flex-shrink-0">
+      <aside className="w-64 flex flex-col flex-shrink-0" style={{ background: '#0d0b14', borderRight: '1px solid #2a2740' }}>
 
         {/* Logo area at the top */}
-        <div className="px-6 py-5 border-b border-zinc-700">
+        <div className="px-6 py-5" style={{ borderBottom: '1px solid #2a2740' }}>
           <div className="flex items-center gap-2">
-            <Store className="w-6 h-6 text-zinc-300" />
+            <Store className="w-6 h-6" style={{ color: '#c9a84c' }} />
             <div>
-              <p className="font-bold text-white leading-tight">GenZiiShop</p>
-              <p className="text-xs text-zinc-400">Admin Panel</p>
+              <p className="font-bold leading-tight" style={{ fontFamily: "'Playfair Display', serif", color: '#c9a84c' }}>GenZiiShop</p>
+              <p className="text-xs" style={{ color: '#9b96b0' }}>Admin Panel</p>
             </div>
           </div>
         </div>
@@ -91,8 +91,8 @@ export default function AdminLayout() {
                 [
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-zinc-700 text-white"          // ← highlighted (active page)
-                    : "text-zinc-400 hover:bg-zinc-800 hover:text-white", // ← normal
+                    ? "text-[#c9a84c] bg-[#1e1b2e]"
+                    : "text-[#9b96b0] hover:bg-[#1e1b2e] hover:text-[#e8e4f0]",
                 ].join(" ")
               }
             >
@@ -103,27 +103,31 @@ export default function AdminLayout() {
         </nav>
 
         {/* User info + Logout at the bottom of the sidebar */}
-        <div className="px-4 py-4 border-t border-zinc-700">
+        <div className="px-4 py-4" style={{ borderTop: '1px solid #2a2740' }}>
           {user && (
             <div className="mb-3">
               {/* First line: full name, truncated if too long */}
-              <p className="text-sm font-medium text-white truncate">{user.fullName}</p>
+              <p className="text-sm font-medium truncate" style={{ color: '#e8e4f0' }}>{user.fullName}</p>
               {/* Second line: email, smaller and dimmer */}
-              <p className="text-xs text-zinc-400 truncate">{user.email}</p>
+              <p className="text-xs truncate" style={{ color: '#9b96b0' }}>{user.email}</p>
             </div>
           )}
           <button
             onClick={() => navigate("/")}
-            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-400
-                       hover:bg-zinc-800 hover:text-white rounded-lg transition-colors mb-1"
+            className="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors mb-1"
+            style={{ color: '#9b96b0' }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#1e1b2e'; e.currentTarget.style.color = '#e8e4f0'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#9b96b0'; }}
           >
             <Store className="w-4 h-4" />
             Back to Site
           </button>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-400
-                       hover:bg-zinc-800 hover:text-white rounded-lg transition-colors"
+            className="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors"
+            style={{ color: '#9b96b0' }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#2a1010'; e.currentTarget.style.color = '#e74c3c'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#9b96b0'; }}
           >
             <LogOut className="w-4 h-4" />
             Logout
@@ -134,7 +138,7 @@ export default function AdminLayout() {
       {/* ── CONTENT AREA (RIGHT) ───────────────────────────────────────── */}
       {/* flex-1 = "take all remaining horizontal space" */}
       {/* overflow-auto = allows this area to scroll if content is tall */}
-      <main className="flex-1 bg-gray-50 overflow-auto">
+      <main className="flex-1 overflow-auto" style={{ background: '#0a0a0f' }}>
         {/* <Outlet /> is where React Router renders the active child page:
             /admin          → Dashboard
             /admin/products → AdminProducts
