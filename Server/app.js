@@ -3,6 +3,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
+import session from 'express-session';
+import passport from './src/config/passport.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import 'dotenv/config';
@@ -35,6 +37,17 @@ app.options(/.*/, cors(corsOptions));
 
 // Cookie parser early — protect middleware needs req.cookies before anything else
 app.use(cookieParser());
+
+// Session — only needed for the Google OAuth redirect handshake.
+// Once we issue a JWT cookie, sessions are not used again.
+app.use(session({
+  secret: process.env.JWT_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: process.env.NODE_ENV === 'production' },
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Security headers — runs after CORS so it doesn't block preflight responses
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));

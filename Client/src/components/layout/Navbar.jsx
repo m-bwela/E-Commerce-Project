@@ -81,6 +81,13 @@ function Navbar() {
                   </Link>
                 </DropdownMenuItem>
 
+                <DropdownMenuItem asChild>
+                  <Link to="/orders" className="flex items-center gap-2 cursor-pointer">
+                    <ShoppingCart className="h-4 w-4" />
+                      My Orders
+                  </Link>
+                </DropdownMenuItem>
+
                 <DropdownMenuSeparator />
 
                 <DropdownMenuItem

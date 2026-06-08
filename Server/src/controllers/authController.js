@@ -177,4 +177,21 @@ const deleteAccount = async (req, res, next) => {
   }
 };
 
-export { register, login, logout, getMe, updateProfile, changePassword, deleteAccount };
+// --- GOOGLE OAUTH CALLBACK ---
+// Passport has already verified the Google token and attached the user to req.user.
+// Our job here is the same as a normal login: issue a JWT cookie and redirect to the app.
+const googleCallback = (req, res) => {
+  const token = generateToken(req.user.id);
+
+  res.cookie('token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  });
+
+  // Redirect back to the frontend — React Router takes over from here
+  res.redirect(process.env.CLIENT_URL);
+};
+
+export { register, login, logout, getMe, updateProfile, changePassword, deleteAccount, googleCallback };
