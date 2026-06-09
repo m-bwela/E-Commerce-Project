@@ -1,4 +1,5 @@
 import prisma from '../config/db.js';
+import { sendOrderConfirmation } from '../services/emailService.js'; 
 
 // POST /api/orders — create order from cart
 const createOrder = async (req, res, next) => {
@@ -22,8 +23,8 @@ const createOrder = async (req, res, next) => {
     }, 0);
     // reduce = loop through items, multiply price × quantity, add to running sum
 
-    // Create the order with all items
-    const order = await prisma.order.create({
+       // Create the order with all items
+    const createdOrder = await prisma.order.create({
       data: {
         userId: req.user.id,
         total,
@@ -32,15 +33,25 @@ const createOrder = async (req, res, next) => {
           create: cart.items.map((item) => ({
             productId: item.productId,
             quantity: item.quantity,
-            price: item.product.price,  // Snapshot the price at time of order
+            price: item.product.price,
           })),
         },
       },
+    });
+
+    // Re-fetch with full relations — guarantees items + products are included
+    const order = await prisma.order.findUnique({
+      where: { id: createdOrder.id },
       include: { items: { include: { product: true } } },
     });
 
     // Clear the cart after ordering
     await prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
+
+    // Send confirmation email — fire and forget (don't await, don't fail the order if email fails)
+    sendOrderConfirmation(order, req.user.email, req.user.fullName).catch((err) =>
+      console.error('Email send failed:', err.message)
+    );
 
     res.status(201).json(order);
   } catch (error) {
