@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProductById, clearProduct } from '@/store/productsSlice'
+import { addToCart } from '@/store/cartSlice'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
@@ -13,7 +14,13 @@ function ProductDetail() {
   // eg. /products/abc-123 -> id = "abc-123"
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { product, loading, error } = useSelector((state) => state.products)
+
+  const handleAddToCart = () => {
+    dispatch(addToCart({ productId: product.id, quantity: 1 }))
+    navigate('/cart')
+  }
 
   useEffect(() => {
     dispatch(fetchProductById(id))
@@ -103,8 +110,8 @@ function ProductDetail() {
               ? `${product.stock} in stock`
               : 'Out of stock'}
           </p>
-          <Button size='lg' disabled={product.stock === 0}>
-              {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+          <Button size='lg' disabled={product.stock === 0} onClick={handleAddToCart}>
+            {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
           </Button>
         </div>
       </div>
