@@ -233,7 +233,7 @@ export default function ProfileManagement() {
             ✦ Account Settings
           </p>
           <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 42, fontWeight: 700, color: "#f0ecff", lineHeight: 1.1 }}>
-            Profile Management
+            Profile
           </h1>
         </div>
 
