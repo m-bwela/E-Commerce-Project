@@ -14,6 +14,7 @@ import productRoutes from './src/routes/products.js';
 import cartRoutes from './src/routes/cart.js';
 import orderRoutes from './src/routes/orders.js';
 import adminRoutes from './src/routes/admin.js';
+import mpesaRoutes from './src/routes/mpesa.js';
 import errorHandler from './src/middleware/errorHandler.js';
 
 // __dirname is not available in ES modules, so we recreate it
@@ -63,6 +64,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/mpesa', mpesaRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));

@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { clearCart } from '@/store/cartSlice';
-import { createOrderAPI } from '@/api/orders';
+import { createOrderAPI, stkPushAPI, checkPaymentStatusAPI } from '@/api/orders';
 import toast from 'react-hot-toast';
 
 export default function Checkout() {
@@ -15,6 +15,10 @@ export default function Checkout() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [placed, setPlaced] = useState(false);
+    // M-Pesa specific state
+    const [waitingPayment, setWaitingPayment] = useState(false); // show "check your phone" screen
+    const [orderId, setOrderId] = useState(null);                // the order we're waiting payment for
+    const pollRef = useRef(null);                                // holds the polling interval ID
 
     // Guard: empty cart or not logged in should never see this page
     const items = cart?.items ?? [];
@@ -22,21 +26,50 @@ export default function Checkout() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!phone.trim()) { setError('Phone number is required'); return }
+        if (!phone.trim()) { setError('Phone number is required'); return; }
         setError(null);
         setLoading(true);
         try {
-            await createOrderAPI(phone); // Backend will read the cart from the cookie, so we don't need to send the cart data here
-            dispatch(clearCart()); // Clear the cart in Redux after successful order creation
-            setPlaced(true);
-            toast.success('Order placed successfully!');
-            setTimeout(() => navigate('/products'), 3000); // Redirect after 3 seconds
+            // Step 1: Create the order (status = PENDING)
+            const { data: order } = await createOrderAPI(phone);
+            setOrderId(order.id);
+
+            // Step 2: Trigger M-Pesa STK push — sends payment prompt to user's phone
+            await stkPushAPI(order.id, phone);
+
+            // Step 3: Clear the cart and show the "check your phone" waiting screen
+            dispatch(clearCart());
+            setWaitingPayment(true);
+            toast.success('Check your phone for the M-Pesa prompt!');
+
+            // Step 4: Poll every 3 seconds to see if payment went through
+            pollRef.current = setInterval(async () => {
+                try {
+                    const { data } = await checkPaymentStatusAPI(order.id);
+                    if (data.status === 'PAID') {
+                        // ✅ Payment confirmed
+                        clearInterval(pollRef.current);
+                        setWaitingPayment(false);
+                        setPlaced(true);
+                        toast.success('Payment confirmed!');
+                    }
+                    // If still PENDING, just keep polling
+                } catch {
+                    // polling error — silently ignore and retry next interval
+                }
+            }, 3000); // poll every 3 seconds
+
         } catch (err) {
-            setError('Failed to place order. Please try again.');
+            setError(err.response?.data?.message || 'Failed to initiate payment. Please try again.');
         } finally {
             setLoading(false);
         }
     };
+
+    // Stop polling when component unmounts (e.g. user navigates away)
+    useEffect(() => {
+        return () => clearInterval(pollRef.current);
+    }, []);
 
     if (!cart || items.length === 0) {
         return (
@@ -49,7 +82,41 @@ export default function Checkout() {
         )
     }
 
-    // Success screen - shown after order is placed
+    // M-Pesa waiting screen — shown after STK push is sent, while polling for PAID status
+    if (waitingPayment) {
+        return (
+            <div className="container mx-auto px-4 py-16 text-center">
+                <div className="mx-auto max-w-md p-8 rounded-2xl" style={{ background: '#181622', border: '1px solid #2a2740' }}>
+                    {/* Spinning M-Pesa logo indicator */}
+                    <div className="flex justify-center mb-6">
+                        <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: 'rgba(34,197,94,0.1)', border: '2px solid #22c55e' }}>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2" className="w-8 h-8 animate-pulse">
+                                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h2 className="text-2xl font-bold mb-2" style={{ fontFamily: "'Playfair Display', serif", color: '#22c55e' }}>
+                        Check Your Phone
+                    </h2>
+                    <p className="mb-2" style={{ color: '#e8e4f0' }}>
+                        An M-Pesa prompt has been sent to
+                    </p>
+                    <p className="text-lg font-bold mb-4" style={{ color: '#c9a84c' }}>{phone}</p>
+                    <p className="text-sm mb-6" style={{ color: '#9b96b0' }}>
+                        Enter your M-Pesa PIN to complete the payment. This page will update automatically.
+                    </p>
+                    {/* Animated waiting dots */}
+                    <div className="flex justify-center gap-1">
+                        {[0, 1, 2].map((i) => (
+                            <div key={i} className="w-2 h-2 rounded-full animate-bounce" style={{ background: '#c9a84c', animationDelay: `${i * 0.15}s` }} />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Success screen - shown after payment is confirmed
     if (placed) {
         return (
             <div className="container mx-auto px-4 py-16 text-center">
@@ -135,7 +202,7 @@ export default function Checkout() {
             className="w-full py-3 rounded-xl font-semibold transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #c9a84c, #e8c96a, #b8922a)', color: '#1a1400', boxShadow: '0 4px 20px #c9a84c44' }}
         >
-            {loading ? 'Placing Order...' : 'Place Order'}
+            {loading ? 'Sending M-Pesa Prompt...' : 'Pay with M-Pesa'}
         </button>
         </div>
 
