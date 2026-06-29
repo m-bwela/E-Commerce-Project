@@ -5,16 +5,22 @@ import './NotFound.css'; // Import the CSS file for styling
 export default function NotFoundPage() {
   return (
     <section className="not-found">
-      <div className="not-found-content">
-        <h1 className="not-found-code">404</h1>
-        <h2 className="not-found-title">Page Not Found</h2>
-        <p className="not-found-text">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <Link to="/" className="not-found-btn">
-          ← Back to Home
-        </Link>
-      </div>
+      <div id="tokyo" className="scene">
+  <canvas id="tkCanvas"></canvas>
+  <div className="tk-scan"></div>
+  <div className="tk-sweep"></div>
+  <div className="tk-corner tl"></div>
+  <div className="tk-corner tr"></div>
+  <div className="tk-corner bl"></div>
+  <div className="tk-corner br"></div>
+  <div className="tk-wrap">
+    <div className="tk-tag">エラー &nbsp;//&nbsp; System Failure</div>
+    <div className="tk-404">404</div>
+    <div className="tk-jp">[ データが見つかりません ]</div>
+    <div className="tk-sub">Requested node has been purged from the grid.<br />No recovery possible.</div>
+    <button className="tk-btn">⟳ &nbsp; Re-enter the Grid</button>
+  </div>
+</div>
     </section>
   );
 }
