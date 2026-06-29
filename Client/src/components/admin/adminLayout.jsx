@@ -29,6 +29,7 @@ import {
   Users,           // 👥 icon
   LogOut,          // 🚪 icon
   Store,           // 🏪 icon
+  Settings,        // ⚙️ icon
 } from "lucide-react";
 
 // The nav links data — one object per sidebar item
@@ -42,6 +43,7 @@ const NAV_LINKS = [
   { to: "/admin/products", label: "Products",  icon: Package,         end: false },
   { to: "/admin/orders",   label: "Orders",    icon: ShoppingCart,    end: false },
   { to: "/admin/users",    label: "Users",     icon: Users,           end: false },
+  { to: "/admin/settings", label: "Settings",  icon: Settings,        end: false },
 ];
 
 export default function AdminLayout() {
@@ -72,7 +74,7 @@ export default function AdminLayout() {
             <Store className="w-6 h-6" style={{ color: '#c9a84c' }} />
             <div>
               <p className="font-bold leading-tight" style={{ fontFamily: "'Playfair Display', serif", color: '#c9a84c' }}>GenZiiShop</p>
-              <p className="text-xs" style={{ color: '#9b96b0' }}>Admin Panel</p>
+              <p className="text-xs" style={{ color: '#9b96b0' }}>Admin</p>
             </div>
           </div>
         </div>
