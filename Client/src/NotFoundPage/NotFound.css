@@ -21,7 +21,10 @@
   100%{top:110%}
 }
  
-.tk-wrap{position:relative;z-index:10;text-align:center;padding:20px}
+.tk-wrap{position:relative;z-index:10;text-align:center;padding:20px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  min-height:100vh;
+}
  
 .tk-tag{
   font-family:'Rajdhani',monospace;font-size:12px;
