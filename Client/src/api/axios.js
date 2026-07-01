@@ -1,11 +1,10 @@
 import axios from 'axios';
 
-// Create a reusable axios instance with default settings
-// Think of this like saving a contact in your phone —
-// instead of dialing the full number every time, you just tap the name.
+// In development: VITE_API_URL is not set, so baseURL = '/api' (Vite proxy handles it)
+// In production: VITE_API_URL = 'https://genziishop.onrender.com' (set in Vercel/Netlify env vars)
 const API = axios.create({
-  baseURL: '/api',        // relative — hits localhost:5173/api which Vite proxies to localhost:5000/api
-  withCredentials: true,  // still needed so cookies are included
+  baseURL: import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : '/api',
+  withCredentials: true,  // include cookies on every request
 });
 
 export default API;
