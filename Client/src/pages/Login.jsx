@@ -150,7 +150,7 @@ function Login() {
 
           {/* Social buttons */}
           <a
-            href="/api/auth/google"
+            href={`${import.meta.env.VITE_API_URL || ''}/api/auth/google`}
             className="w-full inline-flex items-center justify-center gap-2 rounded-md border border-border bg-background px-4 py-2 text-sm font-medium hover:bg-accent transition-colors"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24">
