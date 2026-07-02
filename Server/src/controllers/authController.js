@@ -40,9 +40,9 @@ const register = async (req, res, next) => {
 
     // Set token as an HTTP-only cookie
     res.cookie('token', token, {
-      httpOnly: true,    // JavaScript can't read this cookie (prevents XSS attacks)
-      secure: process.env.NODE_ENV === 'production', // HTTPS only in production
-      sameSite: 'lax',   // Prevents CSRF attacks
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000  // 7 days in milliseconds
     });
 
@@ -77,7 +77,7 @@ const login = async (req, res, next) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
@@ -92,8 +92,12 @@ const login = async (req, res, next) => {
 
 // --- LOGOUT ---
 const logout = (req, res) => {
-  res.cookie('token', '', { httpOnly: true, expires: new Date(0) });
-  // Set cookie to empty string with past expiry = browser deletes it
+  res.cookie('token', '', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    expires: new Date(0),
+  });
   res.json({ message: 'Logged out' });
 };
 
@@ -169,8 +173,12 @@ const changePassword = async (req, res, next) => {
 const deleteAccount = async (req, res, next) => {
   try {
     await prisma.user.delete({ where: { id: req.user.id } });
-    // Clear the auth cookie
-    res.cookie('token', '', { httpOnly: true, expires: new Date(0) });
+    res.cookie('token', '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      expires: new Date(0),
+    });
     res.json({ message: 'Account deleted' });
   } catch (error) {
     next(error);
@@ -186,11 +194,10 @@ const googleCallback = (req, res) => {
   res.cookie('token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
-  // Redirect back to the frontend — React Router takes over from here
   res.redirect(process.env.CLIENT_URL);
 };
 
