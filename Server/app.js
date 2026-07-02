@@ -23,11 +23,23 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Allowed origins — trims trailing slashes to prevent mismatch
+const allowedOrigins = [
+  process.env.CLIENT_URL?.replace(/\/$/, ''),  // production frontend (Vercel)
+  'http://localhost:5173',                       // local development
+].filter(Boolean); // remove undefined if CLIENT_URL is not set
+
 // CORS must come FIRST — before helmet, before everything.
-// The browser sends a preflight OPTIONS request before PATCH/POST/DELETE.
-// If helmet runs first, it adds headers that block cross-origin responses.
 const corsOptions = {
-  origin: process.env.CLIENT_URL,   // e.g. http://localhost:5173
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g. mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    // Trim trailing slash from the incoming origin before comparing
+    if (allowedOrigins.includes(origin.replace(/\/$/, ''))) {
+      return callback(null, true);
+    }
+    callback(new Error(`CORS: origin ${origin} not allowed`));
+  },
   credentials: true,                 // allow cookies to be sent cross-origin
   methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
