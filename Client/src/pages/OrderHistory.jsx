@@ -107,7 +107,7 @@ export default function OrderHistory() {
                                 <div>
                                     <p className='text-xs' style={{ color: '#9b96b0' }}>Total</p>
                                     <p className='text-sm font-bold' style={{ color: '#c9a84c' }}>
-                                        KSh {Number(order.total).toLocaleString()}
+                                        Ksh {Number(order.total).toLocaleString()}
                                     </p>
                                 </div>
                                 <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${STATUS_STYLES[order.status] || ''}`}>
@@ -131,7 +131,7 @@ export default function OrderHistory() {
                                         <p className='text-xs' style={{ color: '#9b96b0' }}>Qty: {item.quantity}</p>
                                     </div>
                                     <p className='text-sm font-medium flex-shrink-0' style={{ color: '#c9a84c' }}>
-                                        KSh {Number(item.price * item.quantity).toLocaleString('en-KE')}
+                                        Ksh {Number(item.price * item.quantity).toLocaleString('en-KE')}
                                     </p>
                                 </div>
                             ))}
