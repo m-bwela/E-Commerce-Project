@@ -35,7 +35,7 @@ function SectionHeader({ icon, title, link }) {
       </div>
       {link && (
         <Link to={link} className="flex items-center gap-1 text-sm hover:underline" style={{ color: '#c9a84c' }}>
-          View All <ArrowRight className="w-4 h-4" />
+          See All <ArrowRight className="w-4 h-4" />
         </Link>
       )}
     </div>

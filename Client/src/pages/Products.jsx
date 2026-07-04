@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProducts } from '@/store/productsSlice'
 import { Button } from '@/components/ui/button'
@@ -15,8 +15,9 @@ function Products() {
   const { user } = useSelector((state) => state.auth)
   // Read products data from Redux store
   const { products, loading, error } = useSelector((state) => state.products)
-  const [search, setSearch] = useState('')
-  const [category, setCategory] = useState('')
+  const [searchParams] = useSearchParams()
+  const [search, setSearch] = useState(searchParams.get('search') || '')
+  const [category, setCategory] = useState(searchParams.get('category') || '')
   const [allCategories, setAllCategories] = useState([])
   const debounceRef = useRef(null)
 
