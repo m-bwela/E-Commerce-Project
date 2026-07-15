@@ -28,7 +28,7 @@ import toast from 'react-hot-toast';
 import { PlusCircle, Pencil, Trash2, ImageIcon } from 'lucide-react';
 
 // Blank form — used when opening the modal for creating a new product
-const EMPTY_FORM = { name: '', description: '', price: '', category: '', stock: '', image: null };
+const EMPTY_FORM = { name: '', description: '', price: '', category: '', stock: '', sizes: '', image: null };
 
 // Image base URL — our backend serves uploaded files from this address
 const IMG_BASE = '';
@@ -63,7 +63,8 @@ export default function AdminProducts() {
       price:       product.price       ?? '',
       category:    product.category    || '',
       stock:       product.stock       ?? '',
-      image:       null,               // don't pre-fill image — user picks a new one if they want
+      sizes:       (product.sizes || []).join(', '), // convert array back to comma-separated string
+      image:       null,
     });
     setIsModalOpen(true);
   };
@@ -98,8 +99,11 @@ export default function AdminProducts() {
     fd.append('price',       formData.price);
     fd.append('category',    formData.category);
     fd.append('stock',       formData.stock);
-    // Only include the image if the user actually picked one
-    // If editing and no new image chosen, the backend keeps the existing one
+    // Parse sizes: split by comma, trim whitespace, remove empty strings
+    const sizesArray = formData.sizes
+      ? formData.sizes.split(',').map(s => s.trim()).filter(Boolean)
+      : [];
+    fd.append('sizes', JSON.stringify(sizesArray));
     if (formData.image) {
       fd.append('image', formData.image);
     }
@@ -362,6 +366,28 @@ export default function AdminProducts() {
                   style={{ background: '#16141f', border: '1px solid #2a2740', color: '#e8e4f0' }}
                 />
               </div>
+
+              {/* Sizes — only shown when category is footwear/shoes */}
+              {/shoe|footwear|sneaker/i.test(formData.category) && (
+                <div>
+                  <label className="block text-sm font-medium mb-1" style={{ color: '#e8e4f0' }}>
+                    Available Sizes
+                    <span className="ml-2 font-normal text-xs" style={{ color: '#9b96b0' }}>comma-separated</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="sizes"
+                    value={formData.sizes}
+                    onChange={handleChange}
+                    placeholder="EU 38, EU 39, EU 40, EU 41, EU 42, EU 43, EU 44"
+                    className="w-full rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
+                    style={{ background: '#16141f', border: '1px solid #2a2740', color: '#e8e4f0' }}
+                  />
+                  <p className="mt-1 text-xs" style={{ color: '#6b6880' }}>
+                    Customers will see these as size options on the product page.
+                  </p>
+                </div>
+              )}
 
               {/* Image file picker */}
               <div>

@@ -43,7 +43,10 @@ const getProduct = async (req, res, next) => {
 // POST /api/products — create (admin only)
 const createProduct = async (req, res, next) => {
   try {
-    const { name, description, price, category, stock } = req.body;
+    const { name, description, price, category, stock, sizes } = req.body;
+
+    // sizes arrives as a JSON string from FormData e.g. '["EU 38","EU 40"]'
+    const sizesArray = sizes ? JSON.parse(sizes) : [];
 
     // If a file was uploaded, use its path; otherwise null
     const image = req.file ? `/uploads/${req.file.filename}` : null;
@@ -52,10 +55,11 @@ const createProduct = async (req, res, next) => {
       data: {
         name,
         description,
-        price:    parseFloat(price),   // FormData sends everything as string — convert to number
+        price:    parseFloat(price),
         image,
         category,
-        stock:    parseInt(stock, 10), // convert to integer
+        stock:    parseInt(stock, 10),
+        sizes:    sizesArray,
       },
     });
     res.status(201).json(product);
@@ -67,7 +71,8 @@ const createProduct = async (req, res, next) => {
 // PUT /api/products/:id — update (admin only)
 const updateProduct = async (req, res, next) => {
   try {
-    const { name, description, price, category, stock } = req.body;
+    const { name, description, price, category, stock, sizes } = req.body;
+    const sizesArray = sizes ? JSON.parse(sizes) : undefined;
     const product = await prisma.product.update({
       where: { id: req.params.id },
       data: {
@@ -77,6 +82,7 @@ const updateProduct = async (req, res, next) => {
         category,
         stock:    stock !== undefined ? parseInt(stock, 10) : undefined,
         image:    req.file ? `/uploads/${req.file.filename}` : undefined,
+        sizes:    sizesArray,
       },
     });
     res.json(product);

@@ -4,8 +4,8 @@ import API from './axios';
 export const getCartAPI = () => API.get('/cart');
 
 // POST /api/cart — add an item to the cart
-// "data" is an object like { productId: "123", quantity: 2 }
-export const addToCartAPI = (productId, quantity) => API.post('/cart', { productId, quantity });
+// size is optional — only passed for footwear products
+export const addToCartAPI = (productId, quantity, size) => API.post('/cart', { productId, quantity, size });
 
 // PUT /api/cart/:productId — update the quantity of an item in the cart
 export const updateCartItemAPI = (itemId, quantity) => API.put(`/cart/${itemId}`, { quantity });

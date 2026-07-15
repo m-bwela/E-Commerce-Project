@@ -26,7 +26,7 @@ const getCart = async (req, res, next) => {
 // POST /api/cart — add item to cart
 const addToCart = async (req, res, next) => {
   try {
-    const { productId, quantity = 1 } = req.body;
+    const { productId, quantity = 1, size } = req.body;
 
     // Find or create the user's cart
     let cart = await prisma.cart.findUnique({ where: { userId: req.user.id } });
@@ -41,15 +41,18 @@ const addToCart = async (req, res, next) => {
     });
 
     if (existingItem) {
-      // Already in cart? Just increase quantity
+      // Already in cart? Increase quantity and update size if provided
       await prisma.cartItem.update({
         where: { id: existingItem.id },
-        data: { quantity: existingItem.quantity + quantity },
+        data: {
+          quantity: existingItem.quantity + quantity,
+          ...(size && { size }),
+        },
       });
     } else {
       // Not in cart? Add new item
       await prisma.cartItem.create({
-        data: { cartId: cart.id, productId, quantity },
+        data: { cartId: cart.id, productId, quantity, size: size || null },
       });
     }
 

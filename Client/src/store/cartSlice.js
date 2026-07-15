@@ -15,8 +15,8 @@ export const fetchCart = createAsyncThunk('cart/fetchCart',
 
 // Add an item (called from Products page)
 export const addToCart = createAsyncThunk('cart/addToCart',
-    async ({ productId, quantity }, { rejectWithValue }) => {
-    try { return (await addToCartAPI(productId, quantity)).data } // response.data = { item: { id, product: {id, name, price, image}, quantity }, totalPrice }
+    async ({ productId, quantity, size }, { rejectWithValue }) => {
+    try { return (await addToCartAPI(productId, quantity, size)).data }
     catch (e) { return rejectWithValue(e.response?.data?.message || 'Failed to add item') }
     }
 )
