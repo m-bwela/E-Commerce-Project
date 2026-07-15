@@ -1,0 +1,31 @@
+{
+  "name": "GenZiiShop — Curated Luxury Fashion",
+  "short_name": "GenZiiShop",
+  "description": "Premium fashion, footwear and accessories curated for those who appreciate the finest things.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#c9a84c",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["shopping", "lifestyle"],
+  "lang": "en"
+}
