@@ -1,26 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './NotFound.css'; // Import the CSS file for styling
+import './NotFound.css';
 
 export default function NotFoundPage() {
   return (
-    <section className="not-found">
-      <div id="tokyo" className="scene">
-  <canvas id="tkCanvas"></canvas>
-  <div className="tk-scan"></div>
-  <div className="tk-sweep"></div>
-  <div className="tk-corner tl"></div>
-  <div className="tk-corner tr"></div>
-  <div className="tk-corner bl"></div>
-  <div className="tk-corner br"></div>
-  <div className="tk-wrap">
-    <div className="tk-tag">Error &nbsp;//&nbsp; System Failure</div>
-    <div className="tk-404">404</div>
-    <div className="tk-jp">[ PAGE NOT FOUND. ]</div>
-    <div className="tk-sub">Requested node has been purged from the grid.<br />No recovery possible.</div>
-    <Link to="/" className="tk-btn">⟳ &nbsp; Back to site</Link>
-  </div>
-</div>
-    </section>
+    <div className="nf-root">
+      <div className="nf-glow nf-glow-1" />
+      <div className="nf-glow nf-glow-2" />
+      <div className="nf-content">
+        <p className="nf-label">Error — Page Not Found</p>
+        <div className="nf-code">404</div>
+        <div className="nf-divider" />
+        <h1 className="nf-title">This page doesn&apos;t exist</h1>
+        <p className="nf-message">
+          The page you&apos;re looking for has been moved, removed,<br />
+          or never existed. Let us guide you back.
+        </p>
+        <Link to="/" className="nf-btn">Return Home</Link>
+      </div>
+    </div>
   );
 }
